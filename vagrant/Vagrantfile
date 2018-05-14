@@ -1,4 +1,14 @@
+$script = <<-SCRIPT
+cp /etc/sysconfig/jenkins /etc/sysconfig/jenkins.orig
+sed -i 's/JENKINS_LISTEN_ADDRESS=.*/JENKINS_LISTEN_ADDRESS=\"0.0.0.0\"/' /etc/sysconfig/jenkins
+sed -i 's/JENKINS_AJP_LISTEN_ADDRESS=.*/JENKINS_AJP_LISTEN_ADDRESS=\"0.0.0.0\"/' /etc/sysconfig/jenkins
+service jenkins restart
+SCRIPT
+
 Vagrant.configure("2") do |config|
   config.vm.box = "liatrio/jenkinsnexus"
   config.vm.box_version = "0.0.1"
+  config.vm.provision "shell", inline: $script
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 8081, host: 8081
 end
