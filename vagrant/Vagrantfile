@@ -1,5 +1,5 @@
 $script = <<-SCRIPT
-cp /etc/sysconfig/jenkins /etc/sysconfig/jenkins.orig
+cp /etc/sysconfig/jenkins /etc/sysconfig/jenkins.$(date +"%Y-%m-%d_%H%M%S")
 sed -i 's/JENKINS_LISTEN_ADDRESS=.*/JENKINS_LISTEN_ADDRESS=\"0.0.0.0\"/' /etc/sysconfig/jenkins
 sed -i 's/JENKINS_AJP_LISTEN_ADDRESS=.*/JENKINS_AJP_LISTEN_ADDRESS=\"0.0.0.0\"/' /etc/sysconfig/jenkins
 service jenkins restart
