@@ -37,13 +37,12 @@ INFO: Jenkins is fully up and running
  `vagrant reload`
  `curl localhost:8080`
 
-### 
-#
-# No connectivity. Sadness.
-# After further destroy/testing, this doesn't seem to happen anymore. =/ 
-# Probably something network/mac related.
-#
-####
+ 
+
+#### No connectivity. Sadness.
+#### After further destroy/testing, this doesn't seem to happen anymore. =/ 
+#### Probably something network/mac related.
+#### Troubleshooting.
 ```
 netstat -an | grep LISTEN
 
@@ -62,8 +61,6 @@ tcp6       0      0 :::8080                 :::*                    LISTEN
 #JENKINS_LISTEN_ADDRESS=""
 #
 ```
-
-
 #### Issue 2. AJP port not listening on ipv4
 ```
 # IP address Jenkins listens on for Ajp13 requests.
