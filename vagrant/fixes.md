@@ -1,8 +1,8 @@
 # Liatrio Technical Interview Experience
 
 ### 1. Install and run this vagrant box: https://app.vagrantup.com/liatrio/boxes/jenkinsnexus/versions/0.0.1 (it's a relatively large file, it may take a little while to install)
-
-- `mkdir vagrant`
+- `mkdir -p liatrio-jenkins-nexus && cd liatrio-jenkins-nexus
+- `mkdir -p vagrant && cd vagrant`
 - Created Vagrantfile.
 - Create run.sh to track steps for later use in a CI/Task.
 - `vagrant up`
