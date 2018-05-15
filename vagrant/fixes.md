@@ -140,11 +140,10 @@ JENKINS_AJP_LISTEN_ADDRESS=""
 ```
  - After further destroy/testing, this hasn't happened anymore. =/ I believe it was probably something network or my personal mac related, like my docker container port clashing on my local machine.
  - OPTION: Update Vagrantfile to enable listen interfaces for main jenkins service as well as AJP on all interfaces.
- - OPTION: (Depends on security) Update the original Vagrant box to fix the install to wide open listen for everyone! re: 0.0.2?
+ - OPTION: Private Static IP's for all the things, do not forward to localhost. Might clash later with other things. Could be more adaptable?
  - OPTION: Dockerize/compartmentalize on priv_networks in containerspace to avoid local developer/workstation troubleshooting/setup time.
- - OPTION: Private Static IP's for all the things. Might clash later with other things. 
 
-#### EXAMPLES: Add an inline script to Vagrantfile to fix broken guest utils ufor mounting of /vagrant share
+#### EXAMPLES: Add an inline script to Vagrantfile to fix broken guest utils for mounting of /vagrant share
 ```
 $kernel_update = <<-KERNEL
 yum update kernel -y
