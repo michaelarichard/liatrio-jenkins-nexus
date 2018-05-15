@@ -1,7 +1,7 @@
 # Liatrio Technical Interview Experience
 
 ### 1. Install and run this vagrant box: https://app.vagrantup.com/liatrio/boxes/jenkinsnexus/versions/0.0.1 (it's a relatively large file, it may take a little while to install)
-- `mkdir -p liatrio-jenkins-nexus && cd liatrio-jenkins-nexus
+- `mkdir -p ~/git/liatrio/interview && cd ~/git/liatrio/interview`
 - `mkdir -p vagrant && cd vagrant`
 - Created Vagrantfile.
 - Create run.sh to track steps for later use in a CI/Task.
@@ -75,9 +75,18 @@ INFO: Jenkins is fully up and running
 ```[root@localhost vagrant]# curl localhost:8080```
 - confirmed, looks like jenkins
 
-#### Added portforwarding to vagrant file. 
- `vagrant reload`
- `curl localhost:8080`
+#### More fixes for localhost
+ - Add portforwarding to vagrant file for 8080 and 8081
+ - Also Disabled guest updates for now. (They're old, kernel-devel package is missing, requires install below) 
+```
+...
++  config.vbguest.auto_update = false
++  config.vm.network "forwarded_port", guest: 8080, host: 8080
++  config.vm.network "forwarded_port", guest: 8081, host: 8081
+...
+```
+-  `vagrant reload`
+-  `curl localhost:8080`
 
 ### Troubleshooting.
 #### No connectivity. Sadness.
@@ -133,8 +142,9 @@ JENKINS_AJP_LISTEN_ADDRESS=""
  - OPTION: Update Vagrantfile to enable listen interfaces for main jenkins service as well as AJP on all interfaces.
  - OPTION: (Depends on security) Update the original Vagrant box to fix the install to wide open listen for everyone! re: 0.0.2?
  - OPTION: Dockerize/compartmentalize on priv_networks in containerspace to avoid local developer/workstation troubleshooting/setup time.
+ - OPTION: Private Static IP's for all the things. Might clash later with other things. 
 
--  EXAMPLE: Add an inline script to Vagrantfile to fix broken guest utils ufor mounting of /vagrant share
+#### EXAMPLES: Add an inline script to Vagrantfile to fix broken guest utils ufor mounting of /vagrant share
 ```
 $kernel_update = <<-KERNEL
 yum update kernel -y
@@ -146,7 +156,7 @@ KERNEL
 ...
 ```
 
- - listen address issues
+ - tweak listen address issues
 ```
 $script = <<-SCRIPT
 cp /etc/sysconfig/jenkins /etc/sysconfig/jenkins.$(date +"%Y-%m-%d_%H%M%S")
@@ -158,7 +168,7 @@ SCRIPT
   config.vm.provision "shell", inline: $script
 ...
 ```
-#### Vagrantfile
+#### Minimal Vagrantfile
 ```
 Vagrant.configure("2") do |config|
   config.vm.box = "liatrio/jenkinsnexus"
