@@ -182,3 +182,12 @@ end
  - DEFAULT USER/PASS=admin:admin123
 
 #### Step 2. Complete !
+
+
+#### Step 3. Fork 
+
+#### TODO: 
+Git SSL fixes to roll back into vagrant.
+```
+yum update -y nss curl libcurl
+```

@@ -1,7 +1,14 @@
+# https://stackoverflow.com/questions/49128953/fatal-unable-to-access-https-github-com-gabelerner-canvg-git-peer-reports
+# github.com SSL fix
+$script = <<-SCRIPT
+yum update -y nss curl libcurl
+SCRIPT
+
 Vagrant.configure("2") do |config|
   config.vm.box = "liatrio/jenkinsnexus"
   config.vm.box_version = "0.0.1"
   config.vbguest.auto_update = false
+  config.vm.provision "shell", inline: $script
   config.vm.network "forwarded_port", guest: 8080, host: 8080
   config.vm.network "forwarded_port", guest: 8081, host: 8081
 end

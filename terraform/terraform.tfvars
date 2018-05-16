@@ -1,0 +1,5 @@
+account = "asdf"
+region = "us-west-2"
+i_type = "t2.micro"
+team = "liatrio"
+environment = "sandbox"
