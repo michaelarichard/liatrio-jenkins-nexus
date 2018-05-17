@@ -6,4 +6,4 @@ sudo /opt/puppetlabs/bin/puppet --version
 git clone https://github.com/michaelarichard/liatrio-jenkins-nexus.git
 sudo /opt/puppetlabs/bin/puppet apply liatrio-jenkins-nexus/puppet/jenkins_server.pp
 
-docker ps -a
+sudo docker ps -a
