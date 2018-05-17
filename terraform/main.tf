@@ -1,3 +1,9 @@
+####
+#
+# Data sources
+#
+####
+
 data "aws_ami" "centos7" {
   most_recent = true
   filter {
@@ -18,18 +24,37 @@ data "aws_ami" "centos7" {
   owners = ["410186602215"] # Canonical
 }
 
+
+data "external" "example" {
+  program = ["bash", "script.sh"]
+  query = {
+    # arbitrary map from strings to strings, passed
+    # to the external program as the data query.
+    id = "abc123"
+  }
+}
+
+
 ####
 # Make an instance
 ####
  data "template_file" "run_time_user_data" {
    template = <<EOF
 #!/bin/sh
+sudo rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
+sudo yum -y install puppet-agent
+sudo puppet --version
+
 sudo yum update -y
-sudo yum install -y docker
+#sudo yum install -y docker
 sudo service docker enable
 sudo service docker start
 docker pull jenkins:latest
 docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+docker run -d -p 8081:8081 --name nexus sonatype/nexus:oss
+
+puppet agent --no-daemonize --onetime --verbose
+
 EOF
  }
 
@@ -111,4 +136,9 @@ output "ami" {
 
 output "instance" {
   value = "${data.aws_instance.centos7.id}"
+}
+
+
+output "url" {
+  value = "${data.external.example}"
 }

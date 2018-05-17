@@ -144,6 +144,8 @@ JENKINS_AJP_LISTEN_ADDRESS=""
  - OPTION: Dockerize/compartmentalize on priv_networks in containerspace to avoid local developer/workstation troubleshooting/setup time.
 
 #### EXAMPLES: Add an inline script to Vagrantfile to fix broken guest utils for mounting of /vagrant share
+ - my guest utils tried to update, and failed, due to missing kernel-devel pkgs. This caused the /vagrant share to become unavailable.
+ - also found ` config.vbguest.auto_update = false` can be added to the Vagrantfile to skip update check, chose this route now for speed, as the share was still functional with the old version tools. 
 ```
 $kernel_update = <<-KERNEL
 yum update kernel -y
@@ -185,7 +187,7 @@ end
 
 
 #### Step 3. Fork 
-
+ - 
 #### TODO: 
 Git SSL fixes to roll back into vagrant.
 ```
