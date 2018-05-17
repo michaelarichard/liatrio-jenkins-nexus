@@ -3,6 +3,16 @@
 # Data sources
 #
 ####
+variable "tags" {
+  type = "map"
+  default = {
+    team = "liatrio"
+    application = "jenkins"
+    provisioner = "terraform"
+    environment = "sandbox"
+  }
+}
+
 
 data "aws_ami" "centos7" {
   most_recent = true
@@ -42,18 +52,23 @@ data "external" "example" {
    template = <<EOF
 #!/bin/sh
 sudo rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
-sudo yum -y install puppet-agent
+sudo yum -y install puppet-agent git
 sudo puppet --version
 
+git clone https://github.com/michaelarichard/liatrio-jenkins-nexus.git
+cd liatrio-jenkins-nexus/puppet
+sudo puppet apply jenkins_server.pp > puppet_log
+
+
 sudo yum update -y
-#sudo yum install -y docker
+sudo yum install -y docker
 sudo service docker enable
 sudo service docker start
-docker pull jenkins:latest
-docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
-docker run -d -p 8081:8081 --name nexus sonatype/nexus:oss
 
-puppet agent --no-daemonize --onetime --verbose
+#docker pull jenkins:latest
+#docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+#docker run -d -p 8081:8081 --name nexus sonatype/nexus:oss
+#puppet agent --no-daemonize --onetime --verbose
 
 EOF
  }
@@ -73,7 +88,7 @@ EOF
     team = "${var.tags["team"]}"
     application = "${var.tags["application"]}"
     provisioner = "${var.tags["provisioner"]}"
-    environment = "${var.environment}"
+    environment = "${var.tags["environment"]}"
     name        = "a-not-empty-name"
    }
  }
@@ -135,7 +150,7 @@ output "ami" {
 }
 
 output "instance" {
-  value = "${data.aws_instance.centos7.id}"
+  value = "${aws_instance.centos7.id}"
 }
 
 
