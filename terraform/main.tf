@@ -57,7 +57,7 @@ sudo puppet --version
 
 git clone https://github.com/michaelarichard/liatrio-jenkins-nexus.git
 cd liatrio-jenkins-nexus/puppet
-sudo puppet apply jenkins_server.pp > puppet_log
+#sudo puppet apply jenkins_server.pp > puppet_log
 
 
 sudo yum update -y

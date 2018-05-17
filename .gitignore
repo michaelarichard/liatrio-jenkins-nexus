@@ -1,0 +1,6 @@
+.vagrant/
+spring-petclinic/
+terraform/.terraform/
+terraform/my_plan
+terraform/script.sh
+terraform/ssh/
