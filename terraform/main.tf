@@ -73,7 +73,7 @@ EOF
     team = "${var.tags["team"]}"
     application = "${var.tags["application"]}"
     provisioner = "${var.tags["provisioner"]}"
-    environment = "${var.environment"]}"
+    environment = "${var.environment}"
     name        = "a-not-empty-name"
    }
  }
@@ -139,6 +139,6 @@ output "instance" {
 }
 
 
-output "url" {
-  value = "${data.external.example}"
-}
+#output "url" {
+#  value = "${data.external.example}"
+#}
