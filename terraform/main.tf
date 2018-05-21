@@ -34,15 +34,15 @@ data "aws_ami" "centos7" {
   owners = ["410186602215"] # Canonical
 }
 
-
-data "external" "example" {
-  program = ["bash", "script.sh"]
-  query = {
-    # arbitrary map from strings to strings, passed
-    # to the external program as the data query.
-    id = "abc123"
-  }
-}
+#
+#data "external" "example" {
+#  program = ["bash", "script.sh"]
+#  query = {
+#    # arbitrary map from strings to strings, passed
+#    # to the external program as the data query.
+#    id = "abc123"
+#  }
+#}
 
 
 ####
