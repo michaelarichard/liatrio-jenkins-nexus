@@ -52,14 +52,14 @@ data "external" "example" {
    template = <<EOF
 #!/bin/sh
 sudo yum update -y
+
+# Docker jenkins/nexus
 sudo yum install -y docker
 sudo service docker enable
 sudo service docker start
-
 docker pull jenkins:latest
 docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:latest
 docker run -d -p 8081:8081 --name nexus sonatype/nexus:oss
-puppet agent --no-daemonize --onetime --verbose
 
 EOF
  }
@@ -82,18 +82,19 @@ EOF
     environment = "${var.tags["environment"]}"
     name        = "a-not-empty-name"
    }
-  provisioner "file" {
-    source      = "init.sh"
-    destination = "/tmp/init.sh"
-    connection {
-      type     = "ssh"
-      user     = "centos"
-      private_key = "${file("ssh/liatrio-demo1.pem")}"
-#      password = "${var.root_password}"
-    }
 
-  }
-
+   # Install puppet and apply a puppet manifest.
+   # We first copy the file and then execute it, allowing us to pass args.
+   provisioner "file" {
+     source      = "init.sh"
+     destination = "/tmp/init.sh"
+     connection {
+       type     = "ssh"
+       user     = "centos"
+       private_key = "${file("ssh/liatrio-demo1.pem")}"
+       #password = "${var.root_password}"
+     }
+   }
    provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/init.sh",
@@ -104,7 +105,7 @@ EOF
       type     = "ssh"
       user     = "centos"
       private_key = "${file("ssh/liatrio-demo1.pem")}"
-#      password = "${var.root_password}"
+      #password = "${var.root_password}"
     }
 
   }
