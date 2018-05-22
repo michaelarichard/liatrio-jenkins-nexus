@@ -3,6 +3,11 @@
 # Data sources
 #
 ####
+resource "aws_key_pair" "liatrio" {
+  key_name   = "liatrio-demo"
+  public_key = "${file("ssh/liatrio-demo1.pem.pub")}"
+}
+
 variable "tags" {
   type = "map"
   default = {
@@ -15,6 +20,7 @@ variable "tags" {
 
 
 data "aws_ami" "centos7" {
+  depends_on = ["aws_key_pair.liatrio"]
   most_recent = true
   filter {
     name   = "root-device-type"
@@ -67,7 +73,7 @@ EOF
  resource "aws_instance" "centos7" {
    ami                    = "${data.aws_ami.centos7.id}"
    instance_type          = "t2.micro"
-   key_name               = "liatrio-demo1"
+   key_name               = "liatrio-demo"
    vpc_security_group_ids = ["${aws_security_group.liatrio-sg.id}"]
    subnet_id              = "subnet-31f32554"
    user_data              = "${data.template_file.run_time_user_data.rendered}"
@@ -92,6 +98,7 @@ EOF
        type     = "ssh"
        user     = "centos"
        private_key = "${file("ssh/liatrio-demo1.pem")}"
+
        #password = "${var.root_password}"
      }
    }

@@ -29,12 +29,13 @@ class jenkins {
 
   package { 'jenkins':   ensure => 'installed' }
 
-  ini_setting { 'jenkins_port':
-    ensure  => present,
-    path    => '/etc/sysconfig/jenkins',
-    setting => 'JENKINS_PORT',
-    value   => '"8082"',
-  }
+# requires stdlib ?
+#  ini_setting { 'jenkins_port':
+#    ensure  => present,
+#    path    => '/etc/sysconfig/jenkins',
+#    setting => 'JENKINS_PORT',
+#    value   => '"8082"',
+#  }
 
 }
 
